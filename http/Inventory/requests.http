@@ -10,5 +10,16 @@ Content-Type: application/json
     "count": 44
 }
 
-### Invoke method
+### Invoke method to get all items
 GET http://localhost:3500/v1.0/invoke/inventory/method/items
+
+
+### Invoke method to add an item
+POST http://localhost:3500/v1.0/invoke/inventory/method/items
+Content-Type: application/json
+
+{
+    "id": 10,
+    "name": "SKU-10",
+    "count": 5000
+}

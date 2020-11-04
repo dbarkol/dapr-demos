@@ -45,8 +45,7 @@ namespace Inventory.Controllers
             // The message is wrapped in a cloud event envelope. Which means that 
             // the domain-specific information is in the Data object.
             var item = JsonConvert.DeserializeObject<Item>(cloudEvent.Data.ToString());
-            _logger.LogInformation($"New item: {item.Id} - {item.Name} - {item.Count} ");
-
+            await AddNewItemAsync(item);
             return new OkResult();
         }
         
@@ -70,6 +69,18 @@ namespace Inventory.Controllers
             });
 
             return new OkObjectResult(items);
+        }
+
+        [HttpPost("/items")]
+        public async Task<IActionResult> AddItem([FromBody]Item item)
+        {
+            await AddNewItemAsync(item);
+            return Ok();
+        }
+
+        private async Task AddNewItemAsync(Item item)
+        {
+            _logger.LogInformation($"New item: {item.Id} - {item.Name} - {item.Count} ");
         }
 
     }
