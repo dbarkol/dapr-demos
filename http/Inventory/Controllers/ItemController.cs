@@ -12,11 +12,11 @@ namespace Inventory.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class InventoryController : ControllerBase
+    public class ItemController : ControllerBase
     {
-        private readonly ILogger<InventoryController> _logger;
+        private readonly ILogger<ItemController> _logger;
 
-        public InventoryController(ILogger<InventoryController> logger)
+        public ItemController(ILogger<ItemController> logger)
         {
             _logger = logger;
         }        
@@ -44,7 +44,7 @@ namespace Inventory.Controllers
         {
             // The message is wrapped in a cloud event envelope. Which means that 
             // the domain-specific information is in the Data object.
-            var item = JsonConvert.DeserializeObject<InventoryItem>(cloudEvent.Data.ToString());
+            var item = JsonConvert.DeserializeObject<Item>(cloudEvent.Data.ToString());
             _logger.LogInformation($"New item: {item.Id} - {item.Name} - {item.Count} ");
 
             return new OkResult();

@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace Inventory.Models
 {
-    public class InventoryItem
+    public class Item
     {
         [JsonProperty("id")]
         public int Id { get; set; }

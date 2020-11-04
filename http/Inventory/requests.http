@@ -7,5 +7,5 @@ Content-Type: application/json
 {
     "id": 1,
     "name": "SKU-444",
-    "count": 22
+    "count": 44
 }
