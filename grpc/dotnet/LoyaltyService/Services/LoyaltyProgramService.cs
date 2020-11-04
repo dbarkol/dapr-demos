@@ -47,10 +47,8 @@ namespace LoyaltyService
                     break;
                 default:
                     break;
-            }
-            
-            //await Task.Delay(TimeSpan.FromSeconds(1));
-            
+            }        
+
             return response;
         }
         
@@ -58,21 +56,32 @@ namespace LoyaltyService
         {
             var result = new ListTopicSubscriptionsResponse();
 
-            // TODO: Implement
+            result.Subscriptions.Add(new TopicSubscription
+            {
+                PubsubName = "pubsub",
+                Topic = "points"
+            });
 
             return Task.FromResult(result);
         }        
 
         public override async Task<TopicEventResponse> OnTopicEvent(TopicEventRequest request, ServerCallContext context)
         {
-            // TODO: Implement
+            _logger.LogDebug("OnTopicEvent");
 
-            return await Task.FromResult(default(TopicEventResponse));
+            if (request.PubsubName == "pubsub")
+            {
+                var incrementRequest = JsonSerializer.Deserialize<IncrementRequest>(request.Data.ToStringUtf8(), this.jsonOptions);
+                if (request.Topic == "points")
+                {
+                    _logger.LogDebug("Points received: {0}", incrementRequest.Points);
+                }
+            }
+
+            var response = new TopicEventResponse();
+            return await Task.FromResult(response);
         }        
 
-
-        // ListInputBindings
-        // OnBindingEvent
 
     }
 }

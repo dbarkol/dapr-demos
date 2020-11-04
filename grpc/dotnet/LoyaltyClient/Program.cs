@@ -27,13 +27,13 @@ namespace LoyaltyClient
 
             await InvokeGrpcIncrementLoyaltyPointsAsync(client);
 
+            await PublishIncrementPointsEventAsync(client);
+
         }
 
         internal static async Task InvokeGrpcIncrementLoyaltyPointsAsync(DaprClient client)
         {
             Console.WriteLine("Invoking update to loyalty points");
-
-            await Task.Delay(TimeSpan.FromMilliseconds(1));
 
             var data = new 
             { 
@@ -49,5 +49,13 @@ namespace LoyaltyClient
             var account = await client.InvokeMethodAsync<object, LoyaltyAccount>("grpc-loyalty-service", "increment", data, httpExtension);
             Console.WriteLine("Updated points: {0}", account.TotalPoints);
         }
+
+        internal static async Task PublishIncrementPointsEventAsync(DaprClient client)
+        {
+            var eventData = new { id = 1, points = 400 };
+            await client.PublishEventAsync("pubsub", "points", eventData);
+            Console.WriteLine("Published points event!");
+        }
+
     }
 }
