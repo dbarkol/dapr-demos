@@ -1,0 +1,11 @@
+@pubsubName=pubsub
+
+# Publish to songs topic
+POST http://localhost:3500/v1.0/publish/{{pubsubName}}/inventory
+Content-Type: application/json
+
+{
+    "id": 1,
+    "name": "SKU-444",
+    "count": 22
+}
