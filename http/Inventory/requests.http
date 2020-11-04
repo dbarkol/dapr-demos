@@ -1,6 +1,6 @@
 @pubsubName=pubsub
 
-# Publish to songs topic
+### Publish to inventory topic
 POST http://localhost:3500/v1.0/publish/{{pubsubName}}/inventory
 Content-Type: application/json
 
@@ -9,3 +9,6 @@ Content-Type: application/json
     "name": "SKU-444",
     "count": 44
 }
+
+### Invoke method
+GET http://localhost:3500/v1.0/invoke/inventory/method/items

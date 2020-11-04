@@ -50,6 +50,28 @@ namespace Inventory.Controllers
             return new OkResult();
         }
         
+        [HttpGet("/items")]
+        public async Task<IActionResult> GetAllItems()
+        {
+            var items = new List<Item>();
+            
+            items.Add(new Item
+            {
+                Id = 1,
+                Name = "SKU1",
+                Count = 100
+            });
+
+            items.Add(new Item
+            {
+                Id = 2,
+                Name = "SKU2",
+                Count = 200
+            });
+
+            return new OkObjectResult(items);
+        }
+
     }
 
 }
