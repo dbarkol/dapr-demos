@@ -25,28 +25,32 @@ namespace LoyaltyClient
                 .UseJsonSerializationOptions(jsonOptions)
                 .Build();
 
+            // Test service invocation
             await InvokeGrpcIncrementLoyaltyPointsAsync(client);
 
+            // Test pub/sub
             await PublishIncrementPointsEventAsync(client);
-
         }
 
         internal static async Task InvokeGrpcIncrementLoyaltyPointsAsync(DaprClient client)
         {
             Console.WriteLine("Invoking update to loyalty points");
 
-            var data = new 
-            { 
-                id = 1, 
-                points = 100
-            };
-
-            HTTPExtension httpExtension = new HTTPExtension()
+            // Initialize the payload for the request
+            var incrementRequest = new IncrementRequest()
             {
-                Verb = HTTPVerb.Post
+                Id = 1,
+                Points = 400
             };
+            
+            HTTPExtension httpExtension = new HTTPExtension(){ Verb = HTTPVerb.Post };
 
-            var account = await client.InvokeMethodAsync<object, LoyaltyAccount>("grpc-loyalty-service", "increment", data, httpExtension);
+            // Make the service invocation request. 
+            // Pass in an increment request and expect back a payload that
+            // represents the loyalty account.
+            var account = await client.InvokeMethodAsync<IncrementRequest, LoyaltyAccount>("grpc-loyalty-service", "increment", incrementRequest, httpExtension);
+
+            // Display the results
             Console.WriteLine("Updated points: {0}", account.TotalPoints);
         }
 
